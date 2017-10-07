@@ -390,7 +390,8 @@ class Controlbar extends Component {
     componentWillReceiveProps(nextProps){
         if(nextProps.updatePlayStatus){
             this.setState({
-                duration: this.changeTime(nextProps.song.duration)
+                duration: this.changeTime(nextProps.song.duration),
+                paused: false
             });
             this.audio.pause();
             this.audio.src = '//ws.stream.qqmusic.qq.com/'+nextProps.song.mid+'.m4a?fromtag=46';

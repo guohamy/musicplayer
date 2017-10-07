@@ -3,6 +3,7 @@ import Header from  './component/Header';
 import Controlbar from  './component/Controlbar';
 import Playlist from  './component/Playlist';
 import Songcon from "./component/Songcon";
+import Toast from "./component/Toast";
 import './style.scss';
 import DefaultImage from './images/default.jpg';
 
@@ -96,6 +97,7 @@ class App extends Component {
     addPlayList(o){
         for(let i =0;i<this.state.playlist.length;i++){
             if(this.state.playlist[i].mid===o.mid){
+                Toast('歌曲已在列表中');
                 return;
             }
         }
@@ -205,7 +207,7 @@ class App extends Component {
 
     clearPlaylist(){
         this.state.playlist.splice(0,this.state.playlist.length);
-        localStorage.playlist = '[]';
+        localStorage.playlist = '';
     }
 
     render(){
