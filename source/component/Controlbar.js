@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Controlbar.scss';
+import Toast from './Toast';
 import DefaultImage from '../images/default.jpg';
 
 class Controlbar extends Component {
@@ -64,7 +65,6 @@ class Controlbar extends Component {
             xmlhttp.open("GET",xmlFile,false);
             xmlhttp.send(null);
             if(xmlhttp.readyState == 4){
-                console.log(xmlhttp.responseXML)
                 xmlDoc = xmlhttp.responseXML!=null?xmlhttp.responseXML.documentElement:defaultObj;
             }
         }
@@ -95,8 +95,7 @@ class Controlbar extends Component {
     }
 
     createLyric(mid){
-        let xmlDoc = this.loadXML('http://127.0.0.2/php/data.php?action=lyric&id='+mid);
-        console.log(xmlDoc)
+        let xmlDoc = this.loadXML('//www.guohamy.cn/api/music.php?action=lyric&id='+mid);
         let eleHTML = xmlDoc.innerHTML;
         let lrcObj = this.parseLyric(eleHTML);
         let lyric = [];
@@ -111,8 +110,11 @@ class Controlbar extends Component {
     }
 
     prev(){
+        if(this.props.playlist.length==0){
+            Toast('播放列表无歌曲');
+            return;
+        }
         for(let i=0;i<this.props.playlist.length;i++){
-            console.log(i);
             if(this.props.playlist[i].mid===this.props.song.mid){
                 let j = i == 0 ? this.props.playlist.length - 1 : i - 1;
                 this.props.changeMusic(this.props.playlist[j]);
@@ -125,6 +127,10 @@ class Controlbar extends Component {
     }
 
     next(){
+        if(this.props.playlist.length==0){
+            Toast('播放列表无歌曲');
+            return;
+        }
         for(let i=0;i<this.props.playlist.length;i++){
             if(this.props.playlist[i].mid===this.props.song.mid){
                 let j = i == (this.props.playlist.length - 1) ? 0 : i + 1;
@@ -300,7 +306,7 @@ class Controlbar extends Component {
 
         //开始请求数据
         this.audio.addEventListener('loadstart',()=>{
-            console.log(this.audio.duration)
+            //.log(this.audio.duration)
         },false);
 
         //正在请求数据
@@ -314,12 +320,12 @@ class Controlbar extends Component {
 
         //开始播放时触发
          this.audio.addEventListener('play',()=>{
-             console.log(this.audio.duration,this.audio.buffered)
+             //console.log(this.audio.duration,this.audio.buffered)
          },false);
 
         //暂停播放时触发
          this.audio.addEventListener('pause',()=>{
-             console.log(3)
+             //console.log(3)
          },false);
 
          //播放结束时触发
@@ -372,7 +378,7 @@ class Controlbar extends Component {
 
         //音量改变
         this.audio.addEventListener('volumechange',()=>{
-            console.log(this.audio.currentTime)
+            //console.log(this.audio.currentTime)
         },false);
 
          //请求数据时遇到错误

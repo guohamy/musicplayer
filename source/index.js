@@ -58,6 +58,7 @@ class App extends Component {
         this.sendCurrentTime = this.sendCurrentTime.bind(this);
         this.changeLyricStatus = this.changeLyricStatus.bind(this);
         this.setLyric = this.setLyric.bind(this);
+        this.clearPlaylist = this.clearPlaylist.bind(this);
 
         if(!localStorage.playlist) {
             localStorage.playlist = JSON.stringify(this.state.playlist);
@@ -95,7 +96,6 @@ class App extends Component {
     addPlayList(o){
         for(let i =0;i<this.state.playlist.length;i++){
             if(this.state.playlist[i].mid===o.mid){
-                console.log('已经存在');
                 return;
             }
         }
@@ -108,7 +108,6 @@ class App extends Component {
 
     removeSong(mid){
         for(let i =0;i<this.state.playlist.length;i++){
-            console.log(this.state.playlist[i])
             if(this.state.playlist[i].mid==mid){
                 this.setState({
                     updatePlayStatus: false,
@@ -141,7 +140,7 @@ class App extends Component {
     }
 
     musicData(showposts, page, keyword){
-        fetch('http://127.0.0.2/php/data.php?action=search&num='+showposts+'&page='+page+'&keyword='+keyword,{
+        fetch('//www.guohamy.cn/api/music.php?action=search&num='+showposts+'&page='+page+'&keyword='+keyword,{
             method: 'GET',
             dataType: 'json'
         }).then((res)=>res.json()).then((json)=>{
@@ -179,8 +178,6 @@ class App extends Component {
                 localStorage.finish = 1;
             }
 
-            console.log(json)
-
         }).catch((error)=>{
             console.log(error)
         });
@@ -206,12 +203,17 @@ class App extends Component {
         });
     }
 
+    clearPlaylist(){
+        this.state.playlist.splice(0,this.state.playlist.length);
+        localStorage.playlist = '[]';
+    }
+
     render(){
         return (
             <div className="main">
                 <Header search={this.search} changeLyricStatus={this.changeLyricStatus} lyricStatus={this.state.lyricStatus} fastClick={this.fastClick}/>
                 <section>
-                    <Playlist playlist={this.state.playlist} changeMusic={this.changeMusic} playMid={this.state.song.mid} removeSong={this.removeSong} />
+                    <Playlist playlist={this.state.playlist} changeMusic={this.changeMusic} playMid={this.state.song.mid} removeSong={this.removeSong} clearPlaylist={this.clearPlaylist} />
                     <Songcon addPlayList={this.addPlayList} changeMusic={this.changeMusic} musicData={this.musicData} songcon={this.state.songcon} keyword={this.state.keyword} isBtn={this.state.isBtn} finish={this.state.finish} page={this.state.page} currentTime={this.state.currentTime} lyricStatus={this.state.lyricStatus} lyric={this.state.lyric} />
                 </section>
                 <Controlbar playlist={this.state.playlist} changeMusic={this.changeMusic} song={this.state.song} updatePlayStatus={this.state.updatePlayStatus} sendCurrentTime={this.sendCurrentTime} setLyric={this.setLyric} />

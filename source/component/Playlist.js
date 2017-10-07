@@ -34,8 +34,8 @@ class Playlist extends Component {
             <div className="playlist">
                 <div className="nav">
                     <div className="title">播放列表</div>
-                    <button className="gButton">清空</button>
-                    <button className="gButton">收起</button>
+                    <button className="gButton" onClick={this.props.clearPlaylist}>清空</button>
+                    {/*<button className="gButton">收起</button>*/}
                 </div>
                 <div className="items">
                     {
