@@ -12,8 +12,10 @@
   top: 50%;
   transform: translate(-50%,-50%);
   -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
   transition: 450ms;
   -webkit-transition: 450ms;
+  -moz-transition: 450ms;
   visibility: hidden;
   opacity: 0;
 
