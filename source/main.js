@@ -1,7 +1,8 @@
-import React, { Componment } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import App from  './index';
 
 ReactDOM.render(
-    <h1>Hello React</h1>,
+    <App/>,
     document.getElementById('root')
 );

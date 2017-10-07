@@ -8,7 +8,7 @@ const Entry = './source/main.js';
 const Output = {
     path: path.resolve(__dirname, 'public'),
     filename: 'main.js',
-    publicPath: '/',
+    publicPath: './',
     sourceMapFilename: '[name].map'
 };
 

@@ -9,7 +9,15 @@ const Config = {
     output: Output,
     module: Loader,
     plugins: [
+        new Webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify("production")
+            }
+        }),
         new Webpack.optimize.UglifyJsPlugin({
+            output: {
+                comments: false,  // remove all comments
+            },
             compress: {
                 warnings: false
             }
