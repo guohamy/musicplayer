@@ -4,10 +4,8 @@ import Controlbar from  './component/Controlbar';
 import Playlist from  './component/Playlist';
 import Songcon from "./component/Songcon";
 import Toast from "./component/Toast";
-import './style.scss';
-import DefaultImage from './images/default.jpg';
 
-class App extends Component {
+class Index extends Component {
     constructor(props){
         super(props);
 
@@ -224,4 +222,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default Index;

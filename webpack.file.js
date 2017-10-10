@@ -1,4 +1,4 @@
-const Webpack = require('webpack');
+ const Webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -8,7 +8,7 @@ const Entry = './source/main.js';
 const Output = {
     path: path.resolve(__dirname, 'public'),
     filename: 'main.js',
-    publicPath: '//music.guohamy.cn/music/',
+    publicPath: '/',
     sourceMapFilename: '[name].map'
 };
 
