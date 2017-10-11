@@ -22,7 +22,7 @@ class MRankings extends Component {
     render(){
         return (
             <div className="content">
-                <MNav/>
+                <MNav type="2"/>
                 <div className="mBody mRankings" ref={ node => this.contentNode = node }>
                     <div className="poster" style={{backgroundImage: 'url('+this.state.billboard.cover+')'}}/>
                     <div className="items">
