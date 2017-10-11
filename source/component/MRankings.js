@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import MNav from './MNav';
 import './MRankings.scss';
 import Toast from '../component/Toast';
@@ -31,14 +32,14 @@ class MRankings extends Component {
                                 this.state.song_list.map((value,index)=>{
                                     return (
                                         <dt key={index}>
-                                            <div className="mSong">
+                                            <Link to={'/v/'+value.songid} className="mSong">
                                                 <i style={{backgroundImage: 'url('+value.cover+')'}}/>
                                                 <div className="detail">
                                                     <div className="title">{value.title}</div>
                                                     <div className="singer">{value.singer}</div>
                                                 </div>
                                                 <div className="time">{value.duration}</div>
-                                            </div>
+                                            </Link>
                                         </dt>
                                     )
                                 })
@@ -51,8 +52,6 @@ class MRankings extends Component {
     }
 
     changeTime(t){
-        let hours = Math.floor(t/3600);
-        hours = hours<=9 ? '0' + hours : hours;
         let minutes = Math.floor(t/60);
         minutes = minutes<=9 ? '0' + minutes : minutes;
         let seconds = Math.floor(t % 60);

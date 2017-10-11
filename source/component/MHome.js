@@ -14,6 +14,7 @@ class MHome extends Component {
             billborad: [1,2,11,21,22,23,24,25]
         };
 
+        this.continue = true;
         this.changePage = this.changePage.bind(this);
         this.loadData = this.loadData.bind(this);
     }
@@ -27,7 +28,7 @@ class MHome extends Component {
     }
 
     loadData(){
-        if(this.state.billborad.length==0){
+        if(this.state.billborad.length==0||!this.continue){
             return;
         }
 
@@ -57,9 +58,11 @@ class MHome extends Component {
                 song_list: song_list
             });
 
-            this.setState({
-                rankingList: rankingList
-            });
+            if(this.continue){
+                this.setState({
+                    rankingList: rankingList
+                });
+            }
 
             this.state.billborad.splice(0,1);
 
@@ -89,7 +92,7 @@ class MHome extends Component {
                                     this.state.rankingList.map((value,index)=>{
                                         return (
                                             <li key={index}>
-                                                <Link to={'./ranking/'+value.billboard.type}/>
+                                                <Link to={'/ranking/'+value.billboard.type}/>
                                                 <div className="top">
                                                     <div className="left" style={{backgroundImage: 'url('+value.billboard.cover+')'}}/>
                                                     <div className="right">
@@ -138,6 +141,10 @@ class MHome extends Component {
 
     componentDidMount(){
         this.loadData()
+    }
+
+    componentWillUnmount(){
+        this.continue = false;
     }
 }
 

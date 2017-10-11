@@ -93,6 +93,10 @@ class MPlay extends Component {
             console.log(error)
         });
     }
+
+    componentWillUnmount(){
+        this.audio.pause();
+    }
 }
 
 export default MPlay;
