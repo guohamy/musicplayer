@@ -60,12 +60,14 @@ class MRankings extends Component {
     }
 
     loadData(){
-        fetch('//www.guohamy.cn/api/music.php?action=tingapi&method=baidu.ting.billboard.billList&type='+this.props.match.params.id+'&size=10&offset='+this.state.offset,{
+        fetch('//www.guohamy.cn/api/music.php?action=qqapi&method=fcg_v8_toplist_cp.fcg&topid='+this.props.match.params.id,{
             method: 'GET',
             dataType: 'json'
         }).then((res)=>res.json()).then((json)=>{
 
-            if(json.song_list==null){
+            console.log(json);
+
+            /*if(json.song_list==null){
                 this.setState({
                     finish: true
                 });
@@ -100,7 +102,7 @@ class MRankings extends Component {
                     song_list: song_list,
                     offset: offset
                 });
-            }
+            }*/
 
         }).catch((error)=>{
             console.log(error)

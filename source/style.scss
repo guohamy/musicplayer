@@ -417,11 +417,23 @@ section {
 
   .detail {
     flex-grow: 1;
+    display: flex;
+    display: -webkit-flex;
+
+    .number {
+      color: #888;
+      margin-right: 5px;
+      font-style: italic;
+    }
 
     .title {
       font-size: 14px;
       line-height: 24px;
       color: #444;
+    }
+
+    .quote {
+      margin: 0 4px;
     }
 
     .singer {

@@ -15,7 +15,7 @@ const Config = {
         contentBase: path.join(__dirname, 'source'),
         publicPath: '/',
         inline: true,
-        port: 6666
+        port: 9998
     },
     externals: {
         jquery: 'jQuery'
