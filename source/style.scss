@@ -420,6 +420,10 @@ section {
     display: flex;
     display: -webkit-flex;
 
+    &.column {
+      flex-direction: column;
+    }
+
     .number {
       color: #888;
       margin-right: 5px;

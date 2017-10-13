@@ -41,82 +41,11 @@ class MHome extends Component {
                 rankingList: json.data.topList
             });
 
-            /*let song_list = [],rankingList = this.state.rankingList;
-            for(let i=0;i<json.data.topList.length;i++){
-                song_list.push({
-                    songid: json.song_list[i].song_id,
-                    uid: json.song_list[i].ting_uid,
-                    cover: '//www.guohamy.cn/api/music.php?action=tingpic&url=' + json.song_list[i].pic_big,
-                    title: json.song_list[i].title,
-                    singer: json.song_list[i].author
-                });
-            }
-
-            rankingList.push({
-                billboard: {
-                    type: json.billboard.billboard_type,
-                    cover: '//www.guohamy.cn/api/music.php?action=tingpic&url=' + json.billboard.pic_s192,
-                    title: json.billboard.name,
-                    desc: json.billboard.comment
-                },
-                song_list: song_list
-            });
-
-            if(this.continue){
-                this.setState({
-                    rankingList: rankingList
-                });
-
-                sessionStorage.setItem('rankingList',JSON.stringify(this.state.rankingList));
-            }*/
-
             console.log(json);
 
         }).catch((error)=>{
             console.log(error)
         });
-
-        /*fetch('//www.guohamy.cn/api/music.php?action=tingapi&method=baidu.ting.billboard.billList&type='+this.state.billborad[0]+'&size=3&offset=0',{
-            method: 'GET',
-            dataType: 'json'
-        }).then((res)=>res.json()).then((json)=>{
-
-            let song_list = [],rankingList = this.state.rankingList;
-            for(let i=0;i<json.song_list.length;i++){
-                song_list.push({
-                    songid: json.song_list[i].song_id,
-                    uid: json.song_list[i].ting_uid,
-                    cover: '//www.guohamy.cn/api/music.php?action=tingpic&url=' + json.song_list[i].pic_big,
-                    title: json.song_list[i].title,
-                    singer: json.song_list[i].author
-                });
-            }
-
-            rankingList.push({
-                billboard: {
-                    type: json.billboard.billboard_type,
-                    cover: '//www.guohamy.cn/api/music.php?action=tingpic&url=' + json.billboard.pic_s192,
-                    title: json.billboard.name,
-                    desc: json.billboard.comment
-                },
-                song_list: song_list
-            });
-
-            if(this.continue){
-                this.setState({
-                    rankingList: rankingList
-                });
-
-                sessionStorage.setItem('rankingList',JSON.stringify(this.state.rankingList));
-            }
-
-            this.state.billborad.splice(0,1);
-
-            this.loadData()
-
-        }).catch((error)=>{
-            console.log(error)
-        });*/
     }
 
     render(){

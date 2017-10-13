@@ -6,6 +6,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
+  z-index: 999;
 
   .cover {
     margin-right: 10px;
@@ -13,6 +14,41 @@
     height: 48px;
     background-size: cover;
     flex-shrink: 0;
+    position: relative;
+
+    &.playStatue {
+
+      &.play:before {
+        content: '\f2e2';
+      }
+
+      &.pause:before {
+        content: '\f2e7';
+      }
+
+      &:before {
+        font-family: someFont;
+        font-size: 24px;
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        z-index: 2;
+      }
+
+      &:after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.25);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+      }
+    }
   }
 
   .controlbar {
