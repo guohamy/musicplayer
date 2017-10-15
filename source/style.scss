@@ -404,6 +404,17 @@ section {
   display: flex;
   display: -webkit-flex;
   align-items: center;
+  position: relative;
+
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
 
   i {
     width: 48px;
@@ -415,14 +426,13 @@ section {
     background-size: cover;
   }
 
+  .column {
+    flex-direction: column;
+  }
   .detail {
     flex-grow: 1;
     display: flex;
     display: -webkit-flex;
-
-    &.column {
-      flex-direction: column;
-    }
 
     .number {
       color: #888;
@@ -442,7 +452,8 @@ section {
 
     .singer {
       font-size: 12px;
-      line-height: 2;
+      line-height: 1;
+      padding: 6px 0;
       color: #999;
     }
   }
@@ -471,5 +482,125 @@ section {
     &.m3 {
       background-image: url(./images/t3.png);
     }
+  }
+}
+
+.mButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 80px;
+  font-size: 16px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+
+  &.keep {
+    background-color: #2d8cf0;
+  }
+
+  &.remove {
+    background-color: #f10521;
+  }
+}
+
+.firstTips {
+  width: 40px;
+  height: 40px;
+  background-image: url(./images/firstTips.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.tipsBox {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1001;
+  background-color: rgba(0,0,0,0.45);
+
+  .tipsBoxc {
+    width: 80%;
+    text-align: center;
+    font-size: 12px;
+    line-height: 2;
+    background-color: #fff;
+    box-shadow: 0 0 40px rgba(0,0,0,0.75);
+    padding: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    color: #333;
+
+    p {
+      color: #999;
+
+      b {
+        color: #ed3f14;
+      }
+    }
+  }
+}
+
+.loading {
+  height: 50px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 998;
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end;
+
+  span {
+    height: 0;
+    width: 7px;
+    margin: 0 2px;
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.65));
+    animation: loader 1s infinite;
+  }
+
+  span {
+    &:nth-child(1) {
+      animation-delay: .1s;
+    }
+    &:nth-child(2) {
+      animation-delay: .2s;
+    }
+    &:nth-child(3) {
+      animation-delay: .3s;
+    }
+    &:nth-child(4) {
+      animation-delay: .4s;
+    }
+    &:nth-child(5) {
+      animation-delay: .5s;
+    }
+    &:nth-child(6) {
+      animation-delay: .6s;
+    }
+  }
+}
+
+@keyframes loader {
+  50% {
+    height: 45px;
+    opacity: .5;
   }
 }

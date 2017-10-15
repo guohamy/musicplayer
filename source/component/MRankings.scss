@@ -8,14 +8,13 @@
     }
 
     .items {
-        padding: 0 10px;
         background-color: #fff;
 
         dl {
 
             dt {
                 border-bottom: 1px #f0f0f0 solid;
-                padding: 10px 0;
+                padding: 10px;
 
                 &:last-child {
                     border-bottom: none;

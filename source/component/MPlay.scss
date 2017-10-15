@@ -16,17 +16,19 @@
 
     .items {
         min-height: 100%;
-        padding: 0 10px 78px;
+        padding-bottom: 78px;
         position: relative;
         z-index: 2;
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         background-color: rgba(244,244,244,0.9);
 
         dl {
 
             dt {
                 border-bottom: 1px #e0e0e0 solid;
-                padding: 10px 0;
+                padding: 10px;
+                position: relative;
 
                 &:last-child {
                     border-bottom: none;

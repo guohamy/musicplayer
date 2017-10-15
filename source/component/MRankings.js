@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import MNav from './MNav';
 import './MRankings.scss';
-import Toast from '../component/Toast';
+import defaultCover from '../images/default_grey.png';
 
 class MRankings extends Component {
     constructor(props){
@@ -10,7 +10,11 @@ class MRankings extends Component {
 
         this.state = {
             song_list: [],
-            billboard: {}
+            billboard: {
+                cover: {
+                    backgroundImage: 'url('+ defaultCover +')'
+                }
+            }
         };
 
         this.loadData = this.loadData.bind(this);
@@ -26,14 +30,29 @@ class MRankings extends Component {
                     <div className="items">
                         <dl>
                             {
+                                this.state.song_list.length ==0 ? (
+                                    <div className="loading">
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                    </div>
+                                ) : ''
+                            }
+                            {
                                 this.state.song_list.map((value,index)=>{
                                     return (
                                         <dt key={index}>
                                             <Link to={'/v/'+value.songmid} className="mSong">
                                                 <i style={{backgroundImage: 'url('+value.cover+')'}}/>
-                                                <div className="detail column">
-                                                    <div className="title">{value.title}</div>
-                                                    <div className="singer">{value.singer} - 《{value.albumname}》</div>
+                                                <div className="detail">
+                                                    <div className="number">{index+1}.</div>
+                                                    <div className="column">
+                                                        <div className="title">{value.title}</div>
+                                                        <div className="singer">{value.singer} - 《{value.albumname}》</div>
+                                                    </div>
                                                 </div>
                                                 <div className="time">{value.duration}</div>
                                             </Link>
