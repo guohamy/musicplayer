@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import MNav from './MNav';
+import MSingItem from './MSingItem';
+import MLoading from './MLoading';
 import './MPlay.scss';
-import Toast from '../component/Toast';
+import Toast from './Toast';
 
 class MPlay extends Component {
     constructor(props){
@@ -33,10 +35,6 @@ class MPlay extends Component {
         this.audio = document.createElement('audio');
         this.audio.preload = 'metadata';
 
-        this.postX = 0;
-        this.postO = null;
-        this.move = false;
-
         this.changeTime = this.changeTime.bind(this);
         this.seeked = this.seeked.bind(this);
         this.changePlayStatus = this.changePlayStatus.bind(this);
@@ -45,11 +43,7 @@ class MPlay extends Component {
         this.changeMusic = this.changeMusic.bind(this);
         this.songInfo = this.songInfo.bind(this);
 
-        this._touchStart = this._touchStart.bind(this);
-        this._touchMove = this._touchMove.bind(this);
-        this._touchEnd = this._touchEnd.bind(this);
-
-        this.keep = this.keep.bind(this);
+        this.changeSongeList = this.changeSongeList.bind(this);
     }
 
     changeTime(t){
@@ -62,7 +56,6 @@ class MPlay extends Component {
 
     seeked(event){
         let progress = this.refs.progress;
-        console.log(this.audio,event.clientX,progress.offsetLeft,progress.offsetWidth,this.audio.duration);
         this.audio.currentTime = (event.clientX-progress.offsetLeft)/progress.offsetWidth*this.audio.duration;
     }
 
@@ -129,10 +122,8 @@ class MPlay extends Component {
                 loading: false
             });
 
-            console.log(json);
-
         }).catch((error)=>{
-            console.log(error)
+            Toast(error)
         });
     }
 
@@ -148,11 +139,10 @@ class MPlay extends Component {
         }
     }
 
-    changeMusic(event){
-        console.log(event.target);
+    changeMusic(mid){
         this.audio.pause();
         this.setState({
-            mid: event.target.dataset.mid
+            mid: mid
         });
         this.update = true;
     }
@@ -217,101 +207,15 @@ class MPlay extends Component {
                 this.loadSongs();
             }
 
-            console.log(json);
-
         }).catch((error)=>{
-            console.log(error)
+            Toast(error)
         });
     }
 
-    _touchStart(event){
-        this.postX = event.touches[0].clientX;
-        this.postO = document.getElementById('item_'+event.target.dataset.key);
-        this.move = true;
-    }
-
-    _touchMove(event){
-        if(!this.move){
-            return;
-        }
-        let newPostX = event.changedTouches[0].clientX;
-        if(this.postO.getAttribute('data-left')==1&&newPostX-this.postX<0){
-            return;
-        }
-        if(newPostX-this.postX<-document.documentElement.clientWidth/2){
-            this.move = false;
-            this.postX = 0;
-            this.postO.style.transform = 'translateX(-80px)';
-            this.postO.style.transitionDuration = document.documentElement.clientWidth * 1.5 + 'ms';
-            this.postO.setAttribute('data-left',1);
-        }
-        else if (newPostX-this.postX>0){
-            this.move = false;
-            this.postX = 0;
-            this.postO.style.transform = 'translateX(0)';
-            this.postO.setAttribute('data-left',2);
-            if(newPostX-this.postX>document.documentElement.clientWidth/2){
-                this.postO.style.transitionDuration = document.documentElement.clientWidth + 'ms';
-            }
-            else{
-                this.postO.style.transitionDuration = '300ms';
-            }
-        }
-        else{
-            this.postO.style.transform = 'translateX('+(newPostX-this.postX)+'px)';
-            this.postO.style.transitionDuration = '0ms';
-        }
-    }
-
-    _touchEnd(event){
-        if(!this.move){
-            return;
-        }
-        let newPostX = event.changedTouches[0].clientX;
-        if(newPostX-this.postX>-40){
-            this.postO.style.transform = 'translateX(0)';
-            this.postO.style.transitionDuration = '150ms';
-            this.postO.setAttribute('data-left',2);
-        }
-        else{
-            this.postO.style.transform = 'translateX(-80px)';
-            this.postO.style.transitionDuration = '300ms';
-            this.postO.setAttribute('data-left',1);
-        }
-        this.move = false;
-        this.postX = 0;
-    }
-
-    keep(event){
-        let newSongList = [];
-        if(localStorage.song_list){
-            newSongList = JSON.parse(localStorage.song_list);
-        }
-        if(newSongList.length>0){
-            for(let i=0;i<newSongList.length;i++){
-                if(newSongList[i].songmid == event.target.dataset.mid){
-                    this.postO.style.transform = 'translateX(0)';
-                    this.postO.style.transitionDuration = '300ms';
-                    Toast('已收藏');
-                    return;
-                }
-            }
-        }
-        newSongList.push({
-            songmid: event.target.dataset.mid,
-            cover: event.target.dataset.cover,
-            title: event.target.dataset.title,
-            singer: event.target.dataset.singer,
-            albumname: event.target.dataset.albumname,
-            duration: event.target.dataset.duration
+    changeSongeList(newSongList){
+        this.setState({
+            song_list: newSongList
         });
-        localStorage.song_list = JSON.stringify(newSongList);
-
-        console.log(localStorage.song_list);
-        this.postO.style.transform = 'translateX(0)';
-        this.postO.style.transitionDuration = '300ms';
-
-        Toast('收藏成功');
     }
 
     render(){
@@ -323,32 +227,12 @@ class MPlay extends Component {
                     <div className="items">
                         <dl>
                             {
-                                this.state.song_list.length ==0 || this.state.loading ? (
-                                    <div className="loading">
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                    </div>
-                                ) : ''
+                                this.state.song_list.length ==0 || this.state.loading ? <MLoading/> : ''
                             }
                             {
                                 this.state.song_list.map((value,index)=>{
                                     return (
-                                        <dt key={index} id={'item_'+index}>
-                                            <div className="mSong" onTouchStart={this._touchStart} onTouchMove={this._touchMove} onTouchEnd={this._touchEnd}>
-                                                <a data-key={index} data-mid={value.songmid} onClick={this.changeMusic}/>
-                                                <i style={{backgroundImage: 'url('+value.cover+')'}}/>
-                                                <div className="detail column">
-                                                    <div className="title">{value.title}</div>
-                                                    <div className="singer">{value.singer} - 《{value.albumname}》</div>
-                                                </div>
-                                                <div className="time">{value.duration}</div>
-                                            </div>
-                                            <a className="mButton keep" data-mid={value.songmid} data-cover={value.cover} data-title={value.title} data-singer={value.singer} data-albumname={value.albumname} data-duration={value.duration} onClick={this.keep}>收藏</a>
-                                        </dt>
+                                        <MSingItem key={index} index={index} songmid={value.songmid} cover={value.cover} title={value.title} singer={value.singer} albumname={value.albumname} duration={value.duration} keep={true} changeMusic={this.changeMusic} changeSongeList={this.changeSongeList}/>
                                     )
                                 })
                             }
@@ -392,8 +276,11 @@ class MPlay extends Component {
         if(this.update){
             this.update = false;
             this.songInfo(false);
-            console.log(123)
         }
+    }
+
+    componentWillReceiveProps(newProps){
+        this.audio.pause();
     }
 
     componentWillUnmount(){

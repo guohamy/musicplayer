@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import MNav from './MNav';
-import Toast from '../component/Toast';
+import MSingItem from './MSingItem';
+import MLoading from './MLoading';
+import Toast from './Toast';
 import './MHome.scss';
 import './MRanking.scss';
 
@@ -12,7 +14,6 @@ class MHome extends Component {
         this.state = {
             page: sessionStorage.getItem('page') ? parseInt(sessionStorage.getItem('page')) : 2,
             rankingList: sessionStorage.getItem('rankingList') ? JSON.parse(sessionStorage.getItem('rankingList')) : [],
-            billborad: [1,2,11,21,22,23,24,25],
             song_list: localStorage.song_list ? JSON.parse(localStorage.song_list) : [],
             hotkeys: [],
             searchValue: '',
@@ -27,12 +28,8 @@ class MHome extends Component {
         this.changePage = this.changePage.bind(this);
         this.loadData = this.loadData.bind(this);
 
-        this._touchStart = this._touchStart.bind(this);
-        this._touchMove = this._touchMove.bind(this);
-        this._touchEnd = this._touchEnd.bind(this);
+        this.changeSongeList = this.changeSongeList.bind(this);
 
-        this.remove = this.remove.bind(this);
-        this.keep = this.keep.bind(this);
         this.changeTime = this.changeTime.bind(this);
         this.changeSearchValue = this.changeSearchValue.bind(this);
         this._search = this._search.bind(this);
@@ -52,7 +49,7 @@ class MHome extends Component {
     }
 
     loadData(){
-        if(this.state.billborad.length==0||!this.continue){
+        if(!this.continue){
             return;
         }
 
@@ -65,123 +62,15 @@ class MHome extends Component {
                 rankingList: json.data.topList
             });
 
-            console.log(json);
-
         }).catch((error)=>{
-            console.log(error)
+            Toast(error)
         });
     }
 
-    _touchStart(event){
-        this.postX = event.touches[0].clientX;
-        this.postO = document.getElementById('item_'+event.target.dataset.key);
-        this.move = true;
-    }
-
-    _touchMove(event){
-        if(!this.move){
-            return;
-        }
-        let newPostX = event.changedTouches[0].clientX;
-        if(this.postO.getAttribute('data-left')==1&&newPostX-this.postX<0){
-            return;
-        }
-        if(newPostX-this.postX<-document.documentElement.clientWidth/2){
-            this.move = false;
-            this.postX = 0;
-            this.postO.style.transform = 'translateX(-80px)';
-            this.postO.style.transitionDuration = document.documentElement.clientWidth * 1.5 + 'ms';
-            this.postO.setAttribute('data-left',1);
-        }
-        else if (newPostX-this.postX>0){
-            this.move = false;
-            this.postX = 0;
-            this.postO.style.transform = 'translateX(0)';
-            this.postO.setAttribute('data-left',2);
-            if(newPostX-this.postX>document.documentElement.clientWidth/2){
-                this.postO.style.transitionDuration = document.documentElement.clientWidth + 'ms';
-            }
-            else{
-                this.postO.style.transitionDuration = '300ms';
-            }
-        }
-        else{
-            this.postO.style.transform = 'translateX('+(newPostX-this.postX)+'px)';
-            this.postO.style.transitionDuration = '0ms';
-        }
-    }
-
-    _touchEnd(event){
-        if(!this.move){
-            return;
-        }
-        let newPostX = event.changedTouches[0].clientX;
-        if(newPostX-this.postX>-40){
-            this.postO.style.transform = 'translateX(0)';
-            this.postO.style.transitionDuration = '150ms';
-            this.postO.setAttribute('data-left',2);
-        }
-        else{
-            this.postO.style.transform = 'translateX(-80px)';
-            this.postO.style.transitionDuration = '300ms';
-            this.postO.setAttribute('data-left',1);
-        }
-        this.move = false;
-        this.postX = 0;
-    }
-
-    remove(event){
-        let newSongList = JSON.parse(localStorage.song_list);
-        for(let i=0;i<newSongList.length;i++){
-            if(newSongList[i].songmid == event.target.dataset.mid){
-                newSongList.splice(i,1);
-            }
-        }
+    changeSongeList(newSongList){
         this.setState({
             song_list: newSongList
         });
-        localStorage.song_list = JSON.stringify(newSongList);
-
-        console.log(localStorage.song_list);
-        this.postO.style.transform = 'translateX(0)';
-        this.postO.style.transitionDuration = '300ms';
-
-        Toast('已删除');
-    }
-
-    keep(event){
-        let newSongList = [];
-        if(localStorage.song_list){
-            newSongList = JSON.parse(localStorage.song_list);
-        }
-        if(newSongList.length>0){
-            for(let i=0;i<newSongList.length;i++){
-                if(newSongList[i].songmid == event.target.dataset.mid){
-                    this.postO.style.transform = 'translateX(0)';
-                    this.postO.style.transitionDuration = '300ms';
-                    Toast('已收藏');
-                    return;
-                }
-            }
-        }
-        newSongList.push({
-            songmid: event.target.dataset.mid,
-            cover: event.target.dataset.cover,
-            title: event.target.dataset.title,
-            singer: event.target.dataset.singer,
-            albumname: event.target.dataset.albumname,
-            duration: event.target.dataset.duration
-        });
-        localStorage.song_list = JSON.stringify(newSongList);
-
-        this.setState({
-            song_list: newSongList
-        });
-
-        this.postO.style.transform = 'translateX(0)';
-        this.postO.style.transitionDuration = '300ms';
-
-        Toast('收藏成功');
     }
 
     changeTime(t){
@@ -189,7 +78,7 @@ class MHome extends Component {
         minutes = minutes<=9 ? '0' + minutes : minutes;
         let seconds = Math.floor(t % 60);
         seconds = seconds<=9 ? '0' + seconds : seconds;
-        return minutes + ':' +seconds;
+        return minutes + ':' + seconds;
     }
 
     changeSearchValue(event){
@@ -241,10 +130,8 @@ class MHome extends Component {
                 loading: false
             });
 
-            console.log(json);
-
         }).catch((error)=>{
-            console.log(error)
+            Toast(error)
         });
     }
 
@@ -272,7 +159,6 @@ class MHome extends Component {
     }
 
     onSearchScrollHandle(){
-        console.log(3)
         if(this.state.finish){
             return;
         }
@@ -280,7 +166,6 @@ class MHome extends Component {
         let scrollHeight = event.target.scrollHeight;
         let scrollTop = event.target.scrollTop;
         if(clientHeight + scrollTop === scrollHeight){
-            console.log(123)
             this._search();
         }
     }
@@ -298,18 +183,7 @@ class MHome extends Component {
                                     {
                                         this.state.song_list.map((value,index)=>{
                                             return (
-                                                <dt key={index} id={'item_'+index}>
-                                                    <div className="mSong" onTouchStart={this._touchStart} onTouchMove={this._touchMove} onTouchEnd={this._touchEnd}>
-                                                        <Link to={'/v/'+value.songmid} data-key={index} data-mid={value.songmid}/>
-                                                        <i style={{backgroundImage: 'url('+value.cover+')'}}/>
-                                                        <div className="detail column">
-                                                            <div className="title">{value.title}</div>
-                                                            <div className="singer">{value.singer} - 《{value.albumname}》</div>
-                                                        </div>
-                                                        <div className="time">{value.duration}</div>
-                                                    </div>
-                                                    <a className="mButton remove" data-mid={value.songmid} onClick={this.remove}>移除</a>
-                                                </dt>
+                                                <MSingItem key={index} index={index} songmid={value.songmid} cover={value.cover} title={value.title} singer={value.singer} albumname={value.albumname} duration={value.duration} remove={true} changeSongeList={this.changeSongeList}/>
                                             )
                                         })
                                     }
@@ -324,16 +198,7 @@ class MHome extends Component {
                         <div className="mBody mRanking">
                             <ul>
                                 {
-                                    this.state.rankingList.length ==0 ? (
-                                        <div className="loading">
-                                            <span/>
-                                            <span/>
-                                            <span/>
-                                            <span/>
-                                            <span/>
-                                            <span/>
-                                        </div>
-                                    ) : ''
+                                    this.state.rankingList.length ==0 ? <MLoading/> : ''
                                 }
                                 {
                                     this.state.rankingList.map((value,index)=>{
@@ -380,16 +245,7 @@ class MHome extends Component {
                                 <a onClick={this.search}>搜索</a>
                             </div>
                             {
-                                this.state.loading ? (
-                                    <div className="loading">
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                        <span/>
-                                    </div>
-                                ) : ''
+                                this.state.loading ? <MLoading/> : ''
                             }
                             {
                                 !this.state.searched ? (
@@ -411,18 +267,7 @@ class MHome extends Component {
                                             {
                                                 this.state.searchList.map((value,index)=>{
                                                     return (
-                                                        <dt key={index} id={'item_'+index}>
-                                                            <div className="mSong" onTouchStart={this._touchStart} onTouchMove={this._touchMove} onTouchEnd={this._touchEnd}>
-                                                                <Link to={'/v/'+value.songmid} data-key={index} data-mid={value.songmid}/>
-                                                                <i style={{backgroundImage: 'url('+value.cover+')'}}/>
-                                                                <div className="detail column">
-                                                                    <div className="title">{value.title}</div>
-                                                                    <div className="singer">{value.singer} - 《{value.albumname}》</div>
-                                                                </div>
-                                                                <div className="time">{value.duration}</div>
-                                                            </div>
-                                                            <a className="mButton keep" data-mid={value.songmid} data-cover={value.cover} data-title={value.title} data-singer={value.singer} data-albumname={value.albumname} data-duration={value.duration} onClick={this.keep}>收藏</a>
-                                                        </dt>
+                                                        <MSingItem key={index} index={index} songmid={value.songmid} cover={value.cover} title={value.title} singer={value.singer} albumname={value.albumname} duration={value.duration} keep={true} changeSongeList={this.changeSongeList}/>
                                                     )
                                                 })
                                             }
@@ -439,6 +284,8 @@ class MHome extends Component {
     }
 
     componentDidMount(){
+        document.title = '音乐播放器';
+
         if(!sessionStorage.getItem('rankingList')) {
             this.loadData();
         }
@@ -452,10 +299,8 @@ class MHome extends Component {
                 hotkeys: json.data.hotkey
             });
 
-            console.log(json);
-
         }).catch((error)=>{
-            console.log(error)
+            Toast(error)
         });
     }
 

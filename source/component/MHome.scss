@@ -13,36 +13,6 @@
     top: 0;
 
   }
-
-  .items {
-    min-height: 100%;
-    padding-bottom: 78px;
-    position: relative;
-    z-index: 2;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background-color: rgba(244,244,244,0.9);
-
-    &.none {
-      background-image: url(../images/none.png);
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: auto 128px;
-    }
-
-    dl {
-
-      dt {
-        border-bottom: 1px #e0e0e0 solid;
-        padding: 10px;
-        position: relative;
-
-        &:last-child {
-          border-bottom: none;
-        }
-      }
-    }
-  }
 }
 
 .mSearch {
@@ -102,26 +72,6 @@
         padding: 0 15px;
         margin-right: 10px;
         margin-bottom: 10px;
-      }
-    }
-  }
-
-  .items {
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background-color: rgba(244,244,244,0.9);
-
-    dl {
-
-      dt {
-        border-bottom: 1px #e0e0e0 solid;
-        padding: 10px;
-        position: relative;
-
-        &:last-child {
-          border-bottom: none;
-        }
       }
     }
   }

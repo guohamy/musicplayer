@@ -1,0 +1,28 @@
+.items {
+    background-color: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100%;
+    position: relative;
+    z-index: 2;
+
+    &.none {
+        background-image: url(../images/none.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto 128px;
+    }
+
+    dl {
+
+        dt {
+            border-bottom: 1px #f0f0f0 solid;
+            padding: 10px;
+            position: relative;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}

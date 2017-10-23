@@ -6,20 +6,4 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
-
-    .items {
-        background-color: #fff;
-
-        dl {
-
-            dt {
-                border-bottom: 1px #f0f0f0 solid;
-                padding: 10px;
-
-                &:last-child {
-                    border-bottom: none;
-                }
-            }
-        }
-    }
 }
